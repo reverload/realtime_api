@@ -1,0 +1,29 @@
+name: voice-assistant
+
+services:
+  freeswitch:
+    image: signalwire/freeswitch:latest
+    container_name: freeswitch
+    ports:
+      - "5060:5060/udp"    # SIP
+      - "5060:5060/tcp"    # SIP
+      - "5080:5080/tcp"    # HTTP Admin
+      - "8021:8021/tcp"    # FreeSWITCH Event Socket
+    volumes:
+      - ./freeswitch/conf:/etc/freeswitch
+      - ./freeswitch/log:/var/log/freeswitch
+      - ./freeswitch/db:/var/lib/freeswitch/db
+    environment:
+      - FS_LICENSE=accept
+      - TZ=Europe/Madrid
+
+#  middleware:
+#    build: ./middleware
+#    container_name: middleware
+#    environment:
+#      - OPENAI_API_KEY=your_openai_api_key
+#      - RECV_SIP_HOST=freeswitch
+#      - RECV_SIP_PORT=5060
+#      - AUDIO_CODEC=G711_A
+#    depends_on:
+#      - freeswitch
